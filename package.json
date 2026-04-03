@@ -1,0 +1,9 @@
+{
+  "name": "monitor-proposicoes-bv",
+  "version": "1.0.0",
+  "description": "Monitor de proposições Câmara Municipal de Boa Vista via SAPL",
+  "main": "monitor.js",
+  "dependencies": {
+    "nodemailer": "^6.9.0"
+  }
+}
