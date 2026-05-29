@@ -6,6 +6,10 @@ const EMAIL_REMETENTE = process.env.EMAIL_REMETENTE;
 const EMAIL_SENHA = process.env.EMAIL_SENHA;
 const ARQUIVO_ESTADO = 'estado.json';
 const API_BASE = 'https://sapl.boavista.rr.leg.br';
+const HEADERS = {
+  Accept: 'application/json',
+  'User-Agent': 'Mozilla/5.0 (compatible; MonitorLegislativo/1.0; +https://monitorlegislativo.com.br)',
+};
 
 function carregarEstado() {
   if (fs.existsSync(ARQUIVO_ESTADO))
@@ -83,11 +87,10 @@ async function buscarProposicoes() {
   console.log(`🔍 Buscando proposições de ${ano} na Câmara de Boa Vista...`);
 
   const url = `${API_BASE}/api/materia/materialegislativa/?ano=${ano}&page=1&page_size=100&ordering=-id`;
-  const response = await fetch(url);
+  const response = await fetch(url, { headers: HEADERS });
 
   if (!response.ok) {
-    console.error(`❌ Erro na API: ${response.status} ${response.statusText}`);
-    return [];
+    throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
   }
 
   const json = await response.json();
@@ -130,8 +133,7 @@ function normalizarProposicao(p) {
   const raw = await buscarProposicoes();
 
   if (raw.length === 0) {
-    console.log('⚠️ Nenhuma proposição encontrada.');
-    process.exit(0);
+    throw new Error('Nenhuma proposição encontrada. Falha provável de coleta/API; workflow deve ficar vermelho.');
   }
 
   const proposicoes = raw.map(normalizarProposicao).filter(p => p.id);
