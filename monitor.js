@@ -137,21 +137,34 @@ async function enviarEmail(novas) {
 
 async function buscarProposicoes() {
   const ano = new Date().getFullYear();
+  const pageSize = 100;
+  const maxPaginas = 200;
+  const todas = [];
   console.log(`🔍 Buscando proposições de ${ano} na Câmara de Boa Vista...`);
 
-  const url = `${API_BASE}/api/materia/materialegislativa/?ano=${ano}&page=1&page_size=100&ordering=-id`;
-  const response = await fetch(url, { headers: HEADERS });
+  for (let pagina = 1; pagina <= maxPaginas; pagina++) {
+    const url = `${API_BASE}/api/materia/materialegislativa/?ano=${ano}&page=${pagina}&page_size=${pageSize}&ordering=-id`;
+    const response = await fetch(url, { headers: HEADERS });
 
-  if (!response.ok) {
-    throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+    if (!response.ok) {
+      throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+    }
+
+    const json = await response.json();
+    const lista = json.results || [];
+    const pagination = json.pagination || {};
+    const totalPaginas = pagination.total_pages || (json.count ? Math.ceil(json.count / pageSize) : null);
+    console.log(`📄 Página ${pagina}/${totalPaginas || '?'}: ${lista.length} proposições`);
+
+    if (lista.length === 0) break;
+    todas.push(...lista);
+
+    const temProxima = Boolean(json.next || pagination.links?.next || pagination.next_page);
+    if (totalPaginas ? pagina >= totalPaginas : !temProxima && lista.length < pageSize) break;
   }
 
-  const json = await response.json();
-  console.log(`📦 Total na API: ${json.count || '?'}`);
-
-  const lista = json.results || [];
-  console.log(`📊 ${lista.length} proposições recebidas`);
-  return lista;
+  console.log(`📊 ${todas.length} proposições recebidas`);
+  return todas;
 }
 
 function extrairTipo(p) {
