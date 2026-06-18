@@ -1,8 +1,6 @@
 name: Monitor Proposições BV
 
 on:
-  schedule:
-    - cron: '18 8 * * 1-5'   # 05:18 BRT
   workflow_dispatch:
 
 jobs:
