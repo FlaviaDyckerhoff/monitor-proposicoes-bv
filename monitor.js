@@ -471,7 +471,7 @@ async function enviarEmail(novas) {
   `;
 
   await transporter.sendMail({
-    from: `"Monitor Câmara BV" <${EMAIL_REMETENTE}>`,
+    from: `"Monitor Câmara Boa Vista" <${EMAIL_REMETENTE}>`,
     to: EMAIL_DESTINO,
     subject: assuntoEmailClienteCitado(novas, `🏛️ Boa Vista: ${novas.length} nova(s) proposição(ões) — ${new Date().toLocaleDateString('pt-BR')}`),
     html,

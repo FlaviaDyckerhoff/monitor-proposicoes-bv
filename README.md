@@ -1,4 +1,4 @@
-# 🏛️ Monitor Proposições BV — Câmara Municipal de Boa Vista
+# Monitor Proposições Boa Vista — Câmara Municipal de Boa Vista
 
 Monitora automaticamente a API SAPL da Câmara Municipal de Boa Vista (RR) e envia email quando há proposições novas. Roda **4x por dia** via GitHub Actions (8h, 12h, 17h e 21h, horário de Brasília).
 
@@ -7,7 +7,7 @@ Monitora automaticamente a API SAPL da Câmara Municipal de Boa Vista (RR) e env
 ## Como funciona
 
 1. O GitHub Actions roda o script nos horários configurados
-2. O script chama a API pública da Câmara BV (`sapl.boavista.rr.leg.br/api`)
+2. O script chama a API pública da Câmara de Boa Vista (`sapl.boavista.rr.leg.br/api`)
 3. Compara as proposições recebidas com as já registradas no `estado.json`
 4. Se há proposições novas → envia email com a lista organizada por tipo
 5. Salva o estado atualizado no repositório

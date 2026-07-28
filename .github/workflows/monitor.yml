@@ -1,4 +1,4 @@
-name: Monitor Proposições BV
+name: Monitor Proposições Boa Vista
 
 on:
   workflow_dispatch:
